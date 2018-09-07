@@ -1,0 +1,28 @@
+--To clone from the git repository
+git clone https://github.com/tektutor/ubuntu-ansible.git
+
+--To generate the Public and private keys for SSH
+ssh-keygen
+
+--To build the Docker images using docker file
+docker build -t vz/ansible-ubuntu .
+Note : Dot(.) represents the current path
+
+-- To build docker container using the image
+docker run -d --name ubuntu1 --hostname ubuntu1 -p 2000:22 -p 8000:80 vz/ansible-ubuntu
+
+--To get the IP address of the docker container
+docker inspect ubuntu1 | grep IPA
+
+--To ssh get the ip and then replace <Not the preferred way>
+ssh root@172.17.0.2
+
+--To ssh with port you have forwared your container. you can get the port details by executing docker ps
+ssh -p 2000 root@localhost
+
+-- To remove folder or files
+rm -rf authorized_keys
+
+-- To copy the files
+cp /root/.ssh/id_rsa.pub authorized_keys
+Note: Goto the directory where you need to copy the files and then you need give like the following cp <pathwhere it is there> <name it should be there in curren dir>

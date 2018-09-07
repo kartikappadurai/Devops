@@ -1,0 +1,35 @@
+--AnsibleGalaxy
+ansible-galaxy init nginx
+
+nginx
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+- defaults
+	- here we will maintain all constant variables ex company logo
+- vars
+	- Here all the variables will be there
+- meta
+	- Author details etc
+- handlers
+	- handler details
+- files
+	- It contains the file for copying like default(ubuntu for nginx install) or index.html
+- templates
+	- index.html.j2
+- tasks
+	- all tasks we write go here

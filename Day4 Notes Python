@@ -1,0 +1,38 @@
+block
+/*action*/
+and returns then it will go to rescue
+rescue
+/print/
+
+Note: it is similar to try catch
+
+- chmod +x ./hello.py --> changes a file as executable file 
+
+-----------------------------Python----------------------------------------------------------------------------------------------------------------version
+-2.X ->2.7.15 --> popular
+-3.X ->3.4 --> Slowly getting adapted ->Max of object oriented(OOPS)
+-Characteristics
+   - interpreter language
+   - supports structured programming
+   - Supports some OOPs concepts
+   - Dynamically typed
+   - private functions('_'infront of the functions)
+   - protected functions ("__" infront of the functions)
+   - public functions
+   - Python scripts have a extension .py
+-Python variants
+   - C/C++ Based -> Cython
+   - Java Based -> Jython
+-Class
+   - a function called inside a class is called Method
+   - Constructors are identified by '__'
+-Sample scripts
+   - hello.py
+   	  	 #!/usr/bin/python -- best practice to include this line
+   	 
+   - function.py
+     	 #!/usr/bin/python
+	  	 def sayHello():
+      	 print ('Hola Python!')
+ 
+ 

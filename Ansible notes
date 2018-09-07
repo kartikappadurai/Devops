@@ -1,0 +1,88 @@
+--we need inventory file which normally hosts - name of the file but it can any 
+
+--To list the ansible Modules
+ansible-doc -l
+
+--define the host variables<these are predefined>
+ansible_user,
+ansible_port,
+ansible_private_key_file
+
+--format 
+<containername> ansible_user=<var> ansible_port=<var> ansible_private_key_file=<var>
+ubuntu2 ansible_user=root ansible_port=2001 ansible_host=localhost ansible_private_key_file=/root/.ssh/id_rsa
+
+--Ansible Ad-hoc commands - it will be executed through ansible tool
+ansible -i hosts all -m ping
+Note: -i stands for inventory followed by inventoryfile name and followed by the machine name , -m stands for module like apt,yum etc
+
+--Creating Groups
+[all]
+Note: Groups can be created by specifying the name with []. [all] is built in anisble group
+	--wild cards is also possible while creating groups
+	[dev_servers]
+	ubuntu[1:2] --> you can give the range within the []
+
+--Ansible Playbook
+--How to execute the playbook
+  ansible-playbook -i hosts ping.yml
+
+--yml file
+	Make sure you give space after colon
+	Note : If you are using Vim editor to make sure you've given space. just check everything before colon is colored
+	
+	example :
+
+	- name: This play will demonstrates the use of ping module
+  	  hosts: all
+  	  tasks:
+   	   - name: Ping the docker container
+         ping:
+
+--To debug the anisble playbook
+ansible -i hosts all -m ping -vvv 
+Note: If you give -v it will populate the log and you can give till 5 like -vvvvv
+
+-- If a playbook is failed,ansible creates a playbook.retry in the same path of the playbook so that you can run that retry so that it will run on the one which failed alone
+
+--Ansible playbook to install vim and tree
+
+- name: Demonstrates use of apt module
+  hosts: all
+  tasks:
+   - name: Install vim editor
+     apt: name=vim state=latest update_cache=yes
+
+   - name: Install tree utility
+     apt: name=tree state=latest update_cache=yes
+
+Note: update_cache=yes is equal apt-get update
+If you execute apt-get update it will update the urls under the path /etc/apt/sources.list
+
+--To run the playbook as a non user
+you need to give become=yes in playbook and then you need in the inventory file you need to provide thse become_user=root and become_password=root
+--Nginx
+---
+- name: Demonstrates installing,configuring and deploying webpage in nginx webserver
+  hosts: all
+  become: yes
+  vars:
+   - greeting_msg: Greetings
+   - provisioner_tool: Docker
+   - automation_tool: Ansible
+  tasks:
+    - name: Install Nginx webserver
+      apt: name=nginx state=latest update_cache=yes
+
+    - name: Configure nginx web folder
+      copy: src=default dest=/etc/nginx/sites-available/default
+
+    - name: Restart the nginx webserver
+      command: service nginx restart
+
+    - name: Create the web root folder
+      file: path=/var/html state=directory mode=0777
+
+    - name: Deploy a webpage into nginx web server
+      template: src=index.html.j2 dest=/var/html/index.html
+...

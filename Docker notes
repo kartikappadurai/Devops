@@ -1,0 +1,10 @@
+docker ps -q 
+docker ps
+docker exec -it c3 bash
+docker inspect network mynetwork
+docker network ls
+docker inspect c3 | grep IPA
+docker network connect mynetwork c3
+docker run -d --name c3 nginx
+docker run -d --name c1 --network=mynetwork nginx
+docker rm -f $(docker ps -aq)

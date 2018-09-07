@@ -1,0 +1,133 @@
+Note: Ansible uses only the Port number and user credentials. you can give a different name than that of a docker containers.
+Its just a string we use in the hosts file
+
+--To enter values into a file without opening the file(ubuntu3)
+echo "ansible_prot:2002">ubuntu3
+-- Ansible playbook
+you should have two folders group_vars and host_vars and hosts file
+--hosts file contents
+[all]
+ubuntu[1:3]
+
+[dev_servers]
+ubuntu1
+
+[qa_servers]
+ubuntu[1:2]
+
+[prod_servers]
+ubuntu3
+
+--group_vars
+should have a file with a name which is given in hosts file ex : all
+--contents of the file
+ansible_user: root
+ansible_become_user: root
+ansible_become_password: root
+ansible_host: localhost
+ansible_private_key_file: /root/.ssh/id_rsa
+
+--host_vars
+Below files should be there
+
+├── ubuntu1
+├── ubuntu2
+└── ubuntu3
+
+--you should mention the host_vars here
+
+file ubuntu1 --> ansible_port: 2000
+file ubuntu2 --> ansible_port: 2001
+file ubuntu3 --> ansible_port: 2002
+Note : pl ensure that there is space after :
+
+--These folders and files should be there to run
+
+├── group_vars
+│   └── all
+├── hosts
+└── host_vars
+    ├── ubuntu1
+    ├── ubuntu2
+    └── ubuntu3
+
+Note : If the files are like the above below command should work. Ensure you run the command in the directory where all the three folders are present
+ansible -i hosts all -m ping
+
+--Having ansible.cfg file.
+If you have the ansible.cfg file you can give the inventory name in the cfg file. Example\	
+[defaults]
+inventory=hosts
+
+Note: if we have ansible.cfg file we can execute the playbook using this command
+ansible all -m ping
+
+--Tree should be like this 
+
+.
+├── ansible.cfg
+├── group_vars
+│   └── all
+├── hosts
+└── host_vars
+    ├── ubuntu1
+    ├── ubuntu2
+    └── ubuntu3
+---------------------------------------------------------------------------------------------------------------------------------------------------Building an Centos 
+git clone https://github.com/tektutor/centos-sshd-passwordless.git
+
+--Below files will be there
+.
+├── Dockerfile
+├── sshd_config
+└── sudoers
+--Copy the public key
+cp /root/.ssh/id_rsa.pub authorized_keys
+
+--Unix access 
+4-Read
+2-Write
+1-Execute
+----------
+7
+
+-- To do ssh
+ssh -p 3001 root@localhost
+
+--folders structure
+.
+├── ansible.cfg
+├── centos-sshd-passwordless
+│   ├── authorized_keys
+│   ├── Dockerfile
+│   ├── sshd_config
+│   └── sudoers
+├── group_vars
+│   └── all
+├── hosts
+└── host_vars
+    ├── centos1
+    ├── centos2
+    ├── centos3
+    ├── ubuntu1
+    ├── ubuntu2
+    └── ubuntu3
+--Playbook
+{{}} - called mustache it is used to declare variables
+if it is used in the playbook it should be inside ""
+--sample playbook with lists
+***Playbook starts here ****
+- name: Demonstrates use of list variable and its navigation as a loop
+  hosts: localhost
+  gather_facts: False
+  vars:
+    - software_tools:
+          - tree
+          - vim
+          - default-jdk
+          - maven
+  tasks:
+    - name: Print all the list of software tools
+      debug: msg="{{item}}"
+      with_list: "{{software_tools}}"
+***Ends here***

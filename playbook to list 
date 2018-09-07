@@ -1,0 +1,16 @@
+- name: Demonstrates use of list variable and its navigation as a loop
+  hosts: localhost
+  gather_facts: False
+  vars:
+    - software_tools:
+          - tree
+          - vim
+          - default-jdk
+          - maven
+  tasks:
+    - name: Print all the list of software tools
+      debug: msg="The value of item is {{item}}"
+      with_list: "{{software_tools}}"
+
+    - name: Print hostname
+      debug: var=ansible_host

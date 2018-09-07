@@ -1,0 +1,34 @@
+- name: Demonstrates provisioning docker containers from Ansible
+  hosts: localhost
+
+  pre_tasks:
+     - name: Remove all ubuntu Containers
+       docker_container:
+         name: "ubuntu{{item}}"
+         image: "vz/ansible-ubuntu"
+         state: absent
+       with_sequence: count=3
+
+     - name: Remove all ubuntu Containers
+       docker_container:
+         name: "ubuntu{{item}}"
+         image: "vz/ansible-ubuntu"
+         state: absent
+       with_sequence: count=3
+
+     - name: Remove all remaining containers
+       shell: "docker rm -f $(docker ps -aq)"
+       ignore_errors: True
+
+  tasks:
+    - name: Create ubuntu container
+      docker_container:
+        name: "ubuntu{{item}}"
+        hostname: "ubuntu{{item}}"
+        image: "vz/ansible-ubuntu"
+        ports:
+          - "200{{item}}:22"
+          - "800{{item}}:80"
+        state: started
+      with_sequence: start=0 end=2
+
